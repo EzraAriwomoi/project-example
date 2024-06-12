@@ -23,9 +23,18 @@ $password = base64_encode($BusinessShortCode . $passkey . $TimeStamp);
 // Form handling
 if (isset($_POST['submit'])) {
     $phone_Number = $_POST['phone']; 
-    $newPhone = ltrim($phone_Number, '0');
-    $phone = '254' . $newPhone; // Customer phone number in international format
     $money = $_POST['amount']; // Amount to be paid
+
+    // Normalize the phone number
+    if (strpos($phone_Number, '0') === 0) {
+        // Local format (e.g., 0712345678)
+        $phone = '254' . substr($phone_Number, 1);
+    } elseif (strpos($phone_Number, '254') === 0) {
+        // International format (e.g., 254712345678)
+        $phone = $phone_Number;
+    } else {
+        die("Error: Invalid phone number format.");
+    }
 
     // Parameters for the STK Push request
     $partyA = $phone; // Customer phone number
