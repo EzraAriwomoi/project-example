@@ -1,0 +1,16 @@
+{
+    "name": "ariwomoi/metro-pass",
+    "description": "manage metro passes and track passanger information for transportation services",
+    "type": "project",
+    "require": {
+        "symfony/yaml": "^4.4",
+        "symfony/dotenv": "^4.4"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ezra"
+        }
+    ],
+    "minimum-stability": "stable"
+}
