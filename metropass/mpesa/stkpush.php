@@ -9,11 +9,13 @@ date_default_timezone_set('Africa/Nairobi');
 
 // M-PESA STK Push endpoint for sandbox environment
 $processrequestUrl = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest";
-// Callback URL for receiving M-PESA transaction status (ensure this is publicly accessible in production)
-$callbackurl = "http://your-live-site.com/metropass/mpesa/callback.php";
+
+// Callback URL for receiving M-PESA transaction status
+// Note: Ensure this URL is publicly accessible in your production environment
+$callbackurl = "http://your-live-site.com/metropass/mpesa/callback.php"; // <-- Modify this to your live callback URL
 
 // M-PESA credentials
-$passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
+$passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919"; // <-- Modify this to your actual M-PESA passkey
 $BusinessShortCode = "174379";
 $TimeStamp = date('YmdHis');
 $password = base64_encode($BusinessShortCode . $passkey . $TimeStamp);
@@ -70,19 +72,25 @@ if (isset($_POST['submit'])) {
         die("Curl error: " . curl_error($curl));
     }
 
+    // Get the HTTP response code
+    $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
     // Close the cURL session
     curl_close($curl);
 
     // Decode the API response
-    $data = json_decode($curl_response);
+    $data = json_decode($curl_response, true); // Decode as associative array
     if ($data === null) {
-        die("Error: Invalid response from M-PESA API.");
+        die("Error: Invalid response from M-PESA API. Response: " . $curl_response);
     }
 
+    // Debugging: Log the response
+    file_put_contents('stkpush_response.log', print_r($data, true));
+
     // Handle the API response
-    if (isset($data->CheckoutRequestID)) {
-        $CheckoutRequestID = $data->CheckoutRequestID;
-        $ResponseCode = $data->ResponseCode;
+    if (isset($data['CheckoutRequestID'])) {
+        $CheckoutRequestID = $data['CheckoutRequestID'];
+        $ResponseCode = $data['ResponseCode'];
 
         if ($ResponseCode == "0") {
             // Insert the CheckoutRequestID into the database
@@ -95,11 +103,17 @@ if (isset($_POST['submit'])) {
             exit();
         } else {
             // Handle transaction initiation error
-            echo "Error in transaction initiation: " . $data->errorMessage;
+            echo "Error in transaction initiation: " . $data['errorMessage'];
         }
     } else {
         // Handle invalid response
-        echo "Error: Invalid response from M-PESA API.";
+        echo "HTTP Code: " . $http_code . "<br>";
+        echo "Response: " . print_r($data, true);
+        if (isset($data['errorCode']) && $data['errorCode'] === '500.001.1001') {
+            echo "Error: A transaction is already in progress for this subscriber. Please wait and try again.";
+        } else {
+            echo "Error: Invalid response from M-PESA API.";
+        }
     }
 } else {
     // Form not submitted

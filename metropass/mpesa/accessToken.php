@@ -1,8 +1,9 @@
 <?php
 // accessToken.php
+
 function generateAccessToken() {
-    $consumerKey = 'MpfUChOqI5gsw5otVjSN2BZOAuZpg0usMnr30f8RlyRLRwYi';
-    $consumerSecret = 'IwRqW8hpZoBpQqv3mTp4t2NIa7euMx86wsa7wMnhRTA0TOKkhbkGhFwVSqceooyZ';
+    $consumerKey = 'MpfUChOqI5gsw5otVjSN2BZOAuZpg0usMnr30f8RlyRLRwYi'; // Replace with your actual consumer key
+    $consumerSecret = 'IwRqW8hpZoBpQqv3mTp4t2NIa7euMx86wsa7wMnhRTA0TOKkhbkGhFwVSqceooyZ'; // Replace with your actual consumer secret
     $credentials = base64_encode("$consumerKey:$consumerSecret");
 
     $ch = curl_init('https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials');
@@ -11,33 +12,30 @@ function generateAccessToken() {
 
     $response = curl_exec($ch);
     if ($response === false) {
-        echo 'Curl error: ' . curl_error($ch) . PHP_EOL;
-    } else {
-        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        if ($http_code !== 200) {
-            echo 'HTTP Error Code: ' . $http_code . PHP_EOL;
-            echo 'Response: ' . $response . PHP_EOL;
-        } else {
-            echo 'Response: ' . $response . PHP_EOL; // Output full response for debugging
-            $result = json_decode($response);
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                echo 'JSON decode error: ' . json_last_error_msg() . PHP_EOL;
-            } else {
-                if (isset($result->access_token)) {
-                    echo 'Access Token: ' . $result->access_token . PHP_EOL;
-                } else {
-                    echo 'Unexpected response structure: ' . $response . PHP_EOL;
-                }
-            }
-        }
+        error_log('Curl error: ' . curl_error($ch));
+        curl_close($ch);
+        return null;
     }
 
+    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
-    if (isset($result->access_token)) {
-        return $result->access_token;
-    } else {
-        return null; // Handle case where access token is not retrieved
+    if ($http_code !== 200) {
+        error_log('HTTP Error Code: ' . $http_code);
+        error_log('Response: ' . $response);
+        return null;
     }
+
+    $result = json_decode($response);
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        error_log('JSON decode error: ' . json_last_error_msg());
+        return null;
+    }
+
+    if (!isset($result->access_token)) {
+        error_log('Unexpected response structure: ' . $response);
+        return null;
+    }
+
+    return $result->access_token;
 }
-?>

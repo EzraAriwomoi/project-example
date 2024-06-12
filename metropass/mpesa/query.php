@@ -5,9 +5,9 @@ include 'accessToken.php';
 date_default_timezone_set('Africa/Nairobi');
 
 // Variables (ensure you have these set with your actual credentials)
-$BusinessShortCode = 'yourBusinessShortCode';
-$passkey = 'yourPasskey';
-$CheckoutRequestID = 'yourCheckoutRequestID'; // Replace with the actual checkout request ID from the STK push response
+$BusinessShortCode = '174379';
+$passkey = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919';
+$CheckoutRequestID = ''; // Replace with the actual checkout request ID from the STK push response
 
 // Generate the timestamp and password
 $timestamp = date('YmdHis');
