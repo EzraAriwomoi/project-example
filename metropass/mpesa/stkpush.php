@@ -15,7 +15,7 @@ $processrequestUrl = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processre
 $callbackurl = "http://your-live-site.com/metropass/mpesa/callback.php"; // <-- Modify this to your live callback URL
 
 // M-PESA credentials
-$passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919"; // <-- Modify this to your actual M-PESA passkey
+$passkey = "your_pass_key"; // <-- Modify this to your actual M-PESA passkey
 $BusinessShortCode = "174379";
 $TimeStamp = date('YmdHis');
 $password = base64_encode($BusinessShortCode . $passkey . $TimeStamp);
@@ -119,7 +119,7 @@ if (isset($_POST['submit'])) {
         echo "HTTP Code: " . $http_code . "<br>";
         echo "Response: " . print_r($data, true);
         if (isset($data['errorCode']) && $data['errorCode'] === '500.001.1001') {
-            echo "Error: A transaction is already in progress for this subscriber. Please wait and try again.";
+            echo "Error: A transaction is already in progress for this user. Please wait and try again.";
         } else {
             echo "Error: Invalid response from M-PESA API.";
         }

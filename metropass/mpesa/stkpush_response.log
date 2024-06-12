@@ -1,7 +1,7 @@
 Array
 (
-    [MerchantRequestID] => c0d2-4b9a-a71a-12bae346ef6e2694406
-    [CheckoutRequestID] => ws_CO_12062024235427427715202539
+    [MerchantRequestID] => 6e86-45dd-91ac-fd5d4178ab523044309
+    [CheckoutRequestID] => ws_CO_13062024000809896795273892
     [ResponseCode] => 0
     [ResponseDescription] => Success. Request accepted for processing
     [CustomerMessage] => Success. Request accepted for processing

@@ -1,23 +1,49 @@
-How to run the metro commuter rail Project
+# Metro Commuter Rail Project
 
-1. Download the zip file
+## How to Run the Metro Commuter Rail Project
 
-2. Extract the file and copy metropass folder
+### Prerequisites
 
-3.Paste inside root directory(for xampp xampp/htdocs)
+- Ensure you have [XAMPP](https://www.apachefriends.org/index.html) installed on your machine.
+- Ensure you have a Daraja account. You can sign up [here](https://developer.safaricom.co.ke/).
+- Create an app in the Daraja sandbox to get your `consumerKey`, `consumerSecret`, and `passkey`.
 
-4.Open PHPMyAdmin (http://localhost/phpmyadmin)
+### Steps to Set Up the Project
 
-5. Create a database with the name rpmsdb
+1. **Download the ZIP File**
+   - Download the project zip file from the provided source.
 
-6. Import rpmsdb.sql file(given inside the zip package in the SQL file folder)
+2. **Extract the File**
+   - Extract the zip file and copy the `metropass` folder.
 
-7. Run the script http://localhost/rpms
+3. **Paste Inside Root Directory**
+   - Paste the `metropass` folder inside the root directory. For XAMPP, this is `xampp/htdocs`.
 
-Credential for Admin panel :
+4. **Set Up the Database**
+   - Open [PHPMyAdmin](http://localhost/phpmyadmin) in your web browser.
+   - Create a new database with the name `rpmsdb`.
+   - Import the `rpmsdb.sql` file, which is located inside the SQL file folder in the extracted zip package.
 
-Username: admin
-Password: joy123
+5. **Run the Application**
+   - Open your web browser and run the script by navigating to [http://localhost/metropass/metropass](http://localhost/metropass/metropass).
 
-Already Created Pass No: 305788314
+### M-PESA Integration
 
+1. **Daraja Account Setup**
+   - Ensure you have a Daraja account.
+   - Create an app in the Daraja sandbox environment.
+
+2. **Generate Required Keys**
+   - Obtain the `consumerKey`, `consumerSecret`, and `passkey` from the Daraja app you created.
+
+3. **Running the M-PESA Integration**
+   - To test the M-PESA integration, open your web browser and navigate to [http://localhost/metropass/metropass/mpesa/](http://localhost/metropass/metropass/mpesa/).
+
+### Test Credentials
+
+- Already created pass number: `305788314`
+
+### Notes
+
+- Ensure the callback URL for the M-PESA STK Push is publicly accessible if you're testing in a live environment.
+- Update the `callbackurl` in your M-PESA script to point to your live server's URL when moving to production.
